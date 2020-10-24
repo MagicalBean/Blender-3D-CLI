@@ -1,5 +1,18 @@
 @ECHO OFF
 
+:: =====VARIABLES=====
+
+:: default directory for blend files 
+SET baseDir=""
+:: default directory output
+SET outputDir=""
+
+:: Using SwithMail
+SET xmlFile=""
+
+:: ===================
+
+:: Reset all runtime variables
 SET "file="
 SET "renderF="
 SET "startFrame="
@@ -8,14 +21,16 @@ SET "renderA="
 SET "render="
 set "result="
 
+:: Find blend file
 IF NOT EXIST %1 (
-SET file=D:/BlenderFiles/ProjectFiles/%1.blend
+SET file=%baseDir%%1
 ) ELSE (
-SET file=%1.blend
+SET file=%1
 )
 
 SHIFT
 
+:: Find all other args
 :loop
 IF NOT "%1"=="" (
 	IF "%1"=="-f" (
@@ -34,35 +49,35 @@ IF NOT "%1"=="" (
 		SET renderA=%1
 		SHIFT
 	)
+	IF "%1"=="-o" (
+		SET outputDir=-o %2
+		SHIFT
+	)
 	SHIFT
 	GOTO :loop
 )
 
-IF NOT "%file%"=="" ECHO %file%
-IF NOT "%startFrame%"=="" ECHO %startFrame%
-IF NOT "%endFrame%"=="" ECHO %endFrame%  
+:: Check args and prepare for commands
 IF NOT "%renderA%"=="" ( 
-	ECHO %renderA%   
 	SET render=%startFrame% %endFrame% %renderA%
 )
 IF NOT "%renderF%"=="" ( 
-	ECHO %renderF%
 	SET render=%renderF%
-)   
+)
 
-"C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.exe" -b %file% -o D:/BlenderFiles/Finals/Images/CMDRendered/ %render%>output.txt && SET result=Completed
+IF "%file%"=="" ECHO ERROR: No file was found
+IF "%render%"=="" ECHO ERROR: No render type defined
+If "%outputDir%"=="" ECHO ERROR: No output directory defined
+
+:: Render the file
+:: BLENDER.EXE FILE
+"C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.exe" -b %file% -o %outputDir% %render%>output.txt && SET result=Completed
 IF errorlevel 1 set result=Failed
 
 echo Render %result%!
 
-SwithMail.exe /s /x "D:\BlenderFiles\Notification System\SwithMailSettings.xml" /p1 %file% /p2 %result%
+:: SWITHMAIL.EXE FILE
+:: UNCOMMENT FOR THE AUTOMATIC EMAIL SERVICE
+::SwithMail.exe /s /x %xmlFile% /p1 %file% /p2 %result%
 
 exit /b
-
-) ELSE (
-blender -b %1 -o D:/BlenderFiles/Finals/Images/CMDRendered/ -a 0
-echo "Render Done!"
-SwithMail.exe /s /x "D:\BlenderFiles\Notification System\SwithMailSettings.xml" /p1 %1
-)
-pause
-EXIT
