@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<SwithMailSettings>
+  <ServerSettings>
+    <FromName>Blender Email Service</FromName>
+    <FromAddress>[FROM EMAIL]</FromAddress>
+    <Username />
+    <Password>mlottngoumjtvmtv</Password>
+    <ObscurePassword>False</ObscurePassword>
+    <MailServer>smtp.gmail.com</MailServer>
+    <MailServerPort>587</MailServerPort>
+    <SSL>True</SSL>
+    <Encoding />
+    <RequestReceipt>False</RequestReceipt>
+    <MessageID>False</MessageID>
+  </ServerSettings>
+  <EmailAddresses>
+    <To>[TO EMAIL]</To>
+    <CC />
+    <BCC />
+    <ReplyTo />
+  </EmailAddresses>
+  <Attachments>
+    <AttachmentPath />
+  </Attachments>
+  <EmailContent>
+    <HTML>False</HTML>
+    <DontReplaceNewLine>False</DontReplaceNewLine>
+    <Subject>Blender Render Status</Subject>
+    <Body>Render of "%Param1%" %Param2%!</Body>
+    <BodyTxtFile />
+  </EmailContent>
+</SwithMailSettings>
